@@ -1,5 +1,5 @@
 <template>
-  <div class="lobby-page" :style="{ backgroundImage: `url(${bgUrl})` }">
+  <div class="lobby-page" :class="{ light: isLight }" :style="{ backgroundImage: `url(${bgUrl})`, '--light-overlay': `url(${lightOverlay})` }">
     <main class="hotspots" aria-label="大厅界面">
       <button class="hotspot filter-btn" type="button" aria-label="筛选"></button>
       <button class="hotspot create-btn" type="button" aria-label="创建房间" @click="openCreateModal"></button>
@@ -53,22 +53,27 @@ import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useLobbyStore } from '../stores/lobby'
 import { useGameStore } from '../stores/game'
+import { useSettingsStore } from '../stores/settings'
 import { getSocket, disconnect } from '../socket'
 import { isUnauthenticatedSocketMessage } from '../utils/socketAuth'
 import BottomMainNav from '@/components/BottomMainNav.vue'
-import bgUrl from '@/assets/ui/lobby-dark.jpg'
+import darkBg from '@/assets/ui/lobby-dark.jpg'
+import lightOverlay from '@/assets/ui/theme-light.jpg'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 const lobbyStore = useLobbyStore()
 const gameStore = useGameStore()
+const settingsStore = useSettingsStore()
 
 const showCreateModal = ref(false)
 const creating = ref(false)
 
 const displayName = computed(() => authStore.user?.nickname || authStore.user?.username || '玩家')
 const defaultRoomName = computed(() => `${displayName.value}的房间`)
+const bgUrl = computed(() => darkBg)
+const isLight = computed(() => settingsStore.themeMode === 'light')
 const createForm = reactive({ name: defaultRoomName.value, initialChips: 1000, chipsMode: 'local' })
 
 function resetCreateForm() {
@@ -127,8 +132,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.lobby-page { min-height: 100vh; background-size: cover; background-position: center top; color: #fff; padding-bottom: 84px; }
-.hotspots { position: relative; min-height: calc(100vh - 84px); }
+.lobby-page { position: relative; min-height: 100vh; background-size: cover; background-position: center top; color: #fff; padding-bottom: 84px; }
+.lobby-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--light-overlay);
+  background-size: cover;
+  background-position: center top;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity .2s ease;
+}
+.lobby-page.light::before { opacity: .28; }
+.hotspots { position: relative; min-height: calc(100vh - 84px); z-index: 1; }
 .hotspot { position: absolute; border: none; background: transparent; cursor: pointer; }
 .filter-btn { right: 3%; top: 55.5%; width: 10%; height: 5%; }
 .create-btn { left: 34%; top: 79.8%; width: 32%; height: 7%; border-radius: 20px; }

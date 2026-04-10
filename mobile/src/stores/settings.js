@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 export const useSettingsStore = defineStore('settings', () => {
   const aiConfigs = ref([])
+  const themeMode = ref('dark')
 
   function load() {
     try {
@@ -17,5 +18,15 @@ export const useSettingsStore = defineStore('settings', () => {
     localStorage.setItem('ai_configs', JSON.stringify(configs))
   }
 
-  return { aiConfigs, load, save }
+  function setTheme(mode) {
+    themeMode.value = 'dark'
+    localStorage.setItem('theme_mode', 'dark')
+  }
+
+  function toggleTheme() {
+    themeMode.value = 'dark'
+    localStorage.setItem('theme_mode', 'dark')
+  }
+
+  return { aiConfigs, themeMode, load, save, setTheme, toggleTheme }
 })

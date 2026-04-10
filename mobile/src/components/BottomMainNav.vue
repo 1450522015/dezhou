@@ -1,5 +1,5 @@
 <template>
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" :class="{ light: isLight }">
     <router-link to="/friends-game" class="nav-item" :class="{ active: route.path.startsWith('/friends-game') }">
       <span class="nav-icon">🂠</span>
       <span>朋友局</span>
@@ -24,9 +24,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useSettingsStore } from '@/stores/settings'
 
 const route = useRoute()
+const settingsStore = useSettingsStore()
+const isLight = computed(() => settingsStore.themeMode === 'light')
 </script>
 
 <style scoped>
@@ -40,6 +44,10 @@ const route = useRoute()
   border-top: 1px solid rgba(107, 143, 120, 0.3);
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 50;
+}
+.bottom-nav.light {
+  background: rgba(244, 255, 252, 0.96);
+  border-top: 1px solid rgba(120, 170, 160, 0.28);
 }
 .nav-item {
   flex: 1;
@@ -57,6 +65,12 @@ const route = useRoute()
 }
 .nav-item.active {
   color: #b8f6c3;
+}
+.bottom-nav.light .nav-item {
+  color: rgba(98, 113, 125, 0.82);
+}
+.bottom-nav.light .nav-item.active {
+  color: #2fbfa9;
 }
 .nav-icon {
   font-size: 19px;
