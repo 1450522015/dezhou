@@ -1,0 +1,8 @@
+{
+  "appId": "liyufei.dezhou",
+  "appName": "德州扑克",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http"
+  }
+}

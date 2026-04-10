@@ -1,0 +1,71 @@
+/* ===== CSS 变量（Stripe 风格） ===== */
+:root {
+  --color-primary: #533afd;
+  --color-primary-hover: #4434d4;
+  --color-heading: #061b31;
+  --color-body: #64748b;
+  --color-label: #273951;
+  --color-bg: #ffffff;
+  --color-surface: #f8fafc;
+  --color-border: #e5edf5;
+  --color-success: #15be53;
+  --color-danger: #e23b4a;
+  --color-poker-red: #e53935;
+  --color-poker-black: #1a1a2e;
+
+  --radius-btn: 4px;
+  --radius-card: 8px;
+  --radius-input: 4px;
+
+  --shadow-card: 0 2px 8px rgba(50,50,93,0.12), 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-modal: 0 8px 24px rgba(50,50,93,0.18);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-heading);
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+/* ===== Utility ===== */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== 滚动条美化（PC端） ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c8d1dc;
+}
