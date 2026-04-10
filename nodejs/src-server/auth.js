@@ -49,7 +49,7 @@ function generateToken(user) {
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ success: false, message: '未登录' });
+    return res.status(401).json({ success: false, message: '未授权访问' });
   }
   const token = authHeader.slice(7);
   try {
@@ -57,7 +57,7 @@ function authMiddleware(req, res, next) {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ success: false, message: 'Token无效或已过期' });
+    return res.status(401).json({ success: false, message: '访问凭证无效或已过期' });
   }
 }
 

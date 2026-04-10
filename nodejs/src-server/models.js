@@ -7,6 +7,17 @@ const config = require('./config');
 
 let db = null;
 
+function formatMongoTarget(uri, dbName) {
+  try {
+    const cleaned = String(uri || '').replace(/^mongodb\+srv:\/\//, 'https://').replace(/^mongodb:\/\//, 'http://');
+    const parsed = new URL(cleaned);
+    const hostPart = parsed.host || 'unknown-host';
+    return `${hostPart}/${dbName}`;
+  } catch {
+    return `${dbName}`;
+  }
+}
+
 function toObjectId(value) {
   if (value instanceof ObjectId) return value;
   if (typeof value === 'string' && ObjectId.isValid(value)) {
@@ -22,7 +33,7 @@ async function initDatabase() {
   const client = new MongoClient(config.MONGODB.uri);
   await client.connect();
   db = client.db(config.MONGODB.dbName);
-  console.log(`MongoDB connected: ${config.MONGODB.dbName}`);
+  console.log(`MongoDB connected: ${formatMongoTarget(config.MONGODB.uri, config.MONGODB.dbName)}`);
 
   // 创建索引
   await db.collection('users').createIndex({ username: 1 }, { unique: true });

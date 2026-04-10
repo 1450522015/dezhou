@@ -2,7 +2,7 @@
   <div class="record-page">
     <div class="toolbar">
       <button class="btn btn-primary" :disabled="loading" @click="fetchRecords">
-        {{ loading ? 'Loading...' : 'Refresh' }}
+        {{ loading ? '加载中...' : '刷新' }}
       </button>
     </div>
 
@@ -12,12 +12,12 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Room</th>
-            <th>Players</th>
-            <th>Winner</th>
-            <th>Pot</th>
-            <th>Status</th>
-            <th>Time</th>
+            <th>房间</th>
+            <th>玩家</th>
+            <th>赢家</th>
+            <th>底池</th>
+            <th>状态</th>
+            <th>时间</th>
           </tr>
         </thead>
         <tbody>
@@ -26,20 +26,20 @@
             <td class="text-muted">{{ formatPlayers(record.players) }}</td>
             <td>{{ formatWinners(record) }}</td>
             <td class="tabular-nums highlight">{{ record.mainPot || 0 }}</td>
-            <td><span class="badge completed">Completed</span></td>
+            <td><span class="badge completed">已完成</span></td>
             <td class="text-muted">{{ formatDate(record.createdAt) }}</td>
           </tr>
           <tr v-if="!loading && records.length === 0">
-            <td colspan="6" class="empty-row">No records</td>
+            <td colspan="6" class="empty-row">暂无记录</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <button class="btn-page" :disabled="page <= 1 || loading" @click="goPage(page - 1)">Prev</button>
+      <button class="btn-page" :disabled="page <= 1 || loading" @click="goPage(page - 1)">上一页</button>
       <span class="page-info">{{ page }} / {{ totalPages }}</span>
-      <button class="btn-page" :disabled="page >= totalPages || loading" @click="goPage(page + 1)">Next</button>
+      <button class="btn-page" :disabled="page >= totalPages || loading" @click="goPage(page + 1)">下一页</button>
     </div>
   </div>
 </template>
@@ -57,7 +57,7 @@ const totalPages = ref(1)
 
 function formatPlayers(players) {
   if (!Array.isArray(players)) return '-'
-  return players.map(player => player.username || 'unknown').join(', ')
+  return players.map(player => player.username || '未知').join(', ')
 }
 
 function formatWinners(record) {
@@ -93,7 +93,7 @@ async function fetchRecords() {
     totalPages.value = res?.totalPages || 1
   } catch (error) {
     records.value = []
-    loadError.value = error.response?.data?.message || 'Load records failed'
+    loadError.value = error.response?.data?.message || '加载记录失败'
   } finally {
     loading.value = false
   }

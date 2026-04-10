@@ -5,20 +5,6 @@
     </header>
 
     <main class="more-main">
-      <section class="section" v-if="isAdmin">
-        <h3>管理</h3>
-        <router-link to="/admin" class="menu-item">
-          <span class="menu-icon">🧭</span>
-          <span class="menu-label">管理后台</span>
-          <span class="menu-arrow">›</span>
-        </router-link>
-        <router-link to="/settings" class="menu-item">
-          <span class="menu-icon">⚙</span>
-          <span class="menu-label">AI 配置</span>
-          <span class="menu-arrow">›</span>
-        </router-link>
-      </section>
-
       <section class="section">
         <h3>个人</h3>
         <router-link to="/profile" class="menu-item">
@@ -68,7 +54,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { disconnect } from '../socket'
@@ -76,8 +61,6 @@ import { disconnect } from '../socket'
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
-
-const isAdmin = computed(() => true)
 
 function handleLogout() {
   if (confirm('确定要退出登录吗？')) {

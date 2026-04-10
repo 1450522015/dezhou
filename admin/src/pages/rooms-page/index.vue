@@ -2,7 +2,7 @@
   <div class="room-manage">
     <div class="toolbar">
       <button class="btn btn-primary" :disabled="loading" @click="fetchRooms">
-        {{ loading ? 'Loading...' : 'Refresh' }}
+        {{ loading ? '加载中...' : '刷新' }}
       </button>
     </div>
 
@@ -12,14 +12,14 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Room ID</th>
-            <th>Name</th>
-            <th>Owner</th>
-            <th>Players</th>
-            <th>Max</th>
-            <th>Buy-in</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>房间ID</th>
+            <th>名称</th>
+            <th>房主</th>
+            <th>人数</th>
+            <th>上限</th>
+            <th>买入</th>
+            <th>状态</th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -34,11 +34,11 @@
               <span :class="['badge', room.status]">{{ statusText(room.status) }}</span>
             </td>
             <td>
-              <button class="btn-sm btn-danger" @click="handleCloseRoom(room.id)">Close</button>
+              <button class="btn-sm btn-danger" @click="handleCloseRoom(room.id)">关闭</button>
             </td>
           </tr>
           <tr v-if="!loading && rooms.length === 0">
-            <td colspan="8" class="empty-row">No rooms</td>
+            <td colspan="8" class="empty-row">暂无房间</td>
           </tr>
         </tbody>
       </table>
@@ -55,21 +55,21 @@ const loading = ref(false)
 const loadError = ref('')
 
 function statusText(status) {
-  if (status === 'playing') return 'Playing'
-  if (status === 'waiting') return 'Waiting'
-  if (status === 'finished') return 'Finished'
-  if (status === 'between_hands') return 'Between hands'
+  if (status === 'playing') return '游戏中'
+  if (status === 'waiting') return '等待中'
+  if (status === 'finished') return '已结束'
+  if (status === 'between_hands') return '局间准备'
   return status || '-'
 }
 
 async function handleCloseRoom(id) {
-  if (!window.confirm('Close this room?')) return
+  if (!window.confirm('确认关闭该房间吗？')) return
 
   try {
     await requestCloseRoom(id)
     rooms.value = rooms.value.filter(room => room.id !== id)
   } catch {
-    window.alert('Close room failed')
+    window.alert('关闭房间失败')
   }
 }
 
@@ -81,7 +81,7 @@ async function fetchRooms() {
     rooms.value = await loadRooms()
   } catch (error) {
     rooms.value = []
-    loadError.value = error.response?.data?.message || 'Load rooms failed'
+    loadError.value = error.response?.data?.message || '加载房间失败'
   } finally {
     loading.value = false
   }

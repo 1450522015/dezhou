@@ -19,9 +19,29 @@ const router = createRouter({
           component: () => import('@/pages/login-page/index.vue'),
         },
         {
+          path: 'friends-game',
+          name: 'FriendsGame',
+          component: () => import('@/views/FriendsGameView.vue'),
+        },
+        {
+          path: 'clubs',
+          name: 'Clubs',
+          component: () => import('@/views/ClubsView.vue'),
+        },
+        {
           path: 'lobby',
           name: 'Lobby',
           component: () => import('@/pages/lobby-page/index.vue'),
+        },
+        {
+          path: 'data',
+          name: 'Data',
+          component: () => import('@/views/DataView.vue'),
+        },
+        {
+          path: 'mine',
+          name: 'Mine',
+          component: () => import('@/views/MineView.vue'),
         },
         {
           path: 'game/:id',
@@ -35,8 +55,7 @@ const router = createRouter({
         },
         {
           path: 'teams',
-          name: 'Teams',
-          component: () => import('@/pages/teams-page/index.vue'),
+          redirect: '/clubs',
         },
         {
           path: 'settings',
@@ -45,8 +64,7 @@ const router = createRouter({
         },
         {
           path: 'more',
-          name: 'More',
-          component: () => import('@/pages/more-page/index.vue'),
+          redirect: '/mine',
         },
       ],
     },
@@ -65,7 +83,7 @@ router.beforeEach(async (to, _from, next) => {
 
   if (to.name === 'Login' && authStore.isLoggedIn) {
     const redirect = typeof to.query.redirect === 'string' ? to.query.redirect : ''
-    next(redirect && redirect.startsWith('/') ? redirect : '/lobby')
+    next(redirect && redirect.startsWith('/') ? redirect : '/friends-game')
     return
   }
 

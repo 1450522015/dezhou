@@ -4,12 +4,12 @@
       <input
         v-model="keyword"
         type="text"
-        placeholder="Search username..."
+        placeholder="搜索用户名..."
         class="search-input"
         @keyup.enter="handleSearch"
       />
       <button class="btn btn-primary" :disabled="loading" @click="fetchPlayers">
-        {{ loading ? 'Loading...' : 'Refresh' }}
+        {{ loading ? '加载中...' : '刷新' }}
       </button>
     </div>
 
@@ -20,12 +20,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Username</th>
-            <th>Net Chips</th>
-            <th>Games</th>
-            <th>Win Rate</th>
-            <th>Created At</th>
-            <th>Action</th>
+            <th>用户名</th>
+            <th>净筹码</th>
+            <th>对局数</th>
+            <th>胜率</th>
+            <th>创建时间</th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -39,52 +39,52 @@
             </td>
             <td class="text-muted">{{ player.createdAt }}</td>
             <td>
-              <button class="btn-sm btn-primary" @click="openResetPwd(player)">Reset Password</button>
-              <button class="btn-sm btn-outline" @click="viewDetail(player)">Detail</button>
+              <button class="btn-sm btn-primary" @click="openResetPwd(player)">重置密码</button>
+              <button class="btn-sm btn-outline" @click="viewDetail(player)">详情</button>
             </td>
           </tr>
           <tr v-if="!loading && players.length === 0">
-            <td colspan="7" class="empty-row">No players</td>
+            <td colspan="7" class="empty-row">暂无玩家</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <button class="btn-page" :disabled="page <= 1 || loading" @click="goPage(page - 1)">Prev</button>
+      <button class="btn-page" :disabled="page <= 1 || loading" @click="goPage(page - 1)">上一页</button>
       <span class="page-info">{{ page }} / {{ totalPages }}</span>
-      <button class="btn-page" :disabled="page >= totalPages || loading" @click="goPage(page + 1)">Next</button>
+      <button class="btn-page" :disabled="page >= totalPages || loading" @click="goPage(page + 1)">下一页</button>
     </div>
 
     <Teleport to="body">
       <div v-if="showResetModal" class="modal-mask" @click.self="closeResetModal">
         <div class="modal-content">
-          <h3>Reset player password</h3>
+          <h3>重置玩家密码</h3>
           <div class="modal-body">
             <div class="info-row">
-              <span class="label">Player:</span>
+              <span class="label">玩家：</span>
               <span class="value">{{ targetPlayer?.username }}</span>
             </div>
 
             <div class="field">
-              <label for="new-pwd">New password (1-20 chars, no spaces)</label>
+              <label for="new-pwd">新密码（1-20 位，不含空格）</label>
               <input
                 id="new-pwd"
                 v-model="newPassword"
                 type="password"
-                placeholder="Enter new password"
+                placeholder="请输入新密码"
                 autocomplete="new-password"
                 @keyup.enter="handleResetPwd"
               />
             </div>
 
             <div class="field">
-              <label for="confirm-pwd">Confirm password</label>
+              <label for="confirm-pwd">确认密码</label>
               <input
                 id="confirm-pwd"
                 v-model="confirmPassword"
                 type="password"
-                placeholder="Confirm new password"
+                placeholder="请再次输入新密码"
                 autocomplete="new-password"
                 @keyup.enter="handleResetPwd"
               />
@@ -94,9 +94,9 @@
           </div>
 
           <div class="modal-actions">
-            <button class="btn-cancel" @click="closeResetModal">Cancel</button>
+            <button class="btn-cancel" @click="closeResetModal">取消</button>
             <button class="btn-confirm" :disabled="resetting" @click="handleResetPwd">
-              {{ resetting ? 'Saving...' : 'Confirm' }}
+              {{ resetting ? '保存中...' : '确认' }}
             </button>
           </div>
         </div>
@@ -179,19 +179,19 @@ async function handleResetPwd() {
   pwdError.value = ''
 
   if (!targetPlayer.value?.id) {
-    pwdError.value = 'Missing user id'
+    pwdError.value = '缺少用户ID'
     return
   }
   if (!newPassword.value || newPassword.value.length > 20) {
-    pwdError.value = 'Password length must be between 1 and 20'
+    pwdError.value = '密码长度必须为 1-20 位'
     return
   }
   if (/\s/.test(newPassword.value)) {
-    pwdError.value = 'Password cannot contain spaces'
+    pwdError.value = '密码不能包含空格'
     return
   }
   if (newPassword.value !== confirmPassword.value) {
-    pwdError.value = 'Passwords do not match'
+    pwdError.value = '两次输入的密码不一致'
     return
   }
 
@@ -199,16 +199,16 @@ async function handleResetPwd() {
   try {
     await resetPlayerPassword(targetPlayer.value.id, newPassword.value)
     closeResetModal()
-    window.alert('Password updated')
+    window.alert('密码更新成功')
   } catch (error) {
-    pwdError.value = error.response?.data?.message || 'Update failed'
+    pwdError.value = error.response?.data?.message || '更新失败'
   } finally {
     resetting.value = false
   }
 }
 
 function viewDetail(player) {
-  window.alert(`Username: ${player.username}\nID: ${player.id}`)
+    window.alert(`用户名：${player.username}\nID：${player.id}`)
 }
 
 async function fetchPlayers() {
@@ -225,7 +225,7 @@ async function fetchPlayers() {
     totalPages.value = res?.totalPages || 1
   } catch (error) {
     players.value = []
-    loadError.value = error.response?.data?.message || 'Load players failed'
+    loadError.value = error.response?.data?.message || '加载玩家失败'
   } finally {
     loading.value = false
   }

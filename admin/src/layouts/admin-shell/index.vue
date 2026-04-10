@@ -7,15 +7,11 @@
       </div>
 
       <nav class="sidebar-nav">
-        <router-link to="/" class="nav-item">Dashboard</router-link>
-        <router-link to="/rooms" class="nav-item">Rooms</router-link>
-        <router-link to="/players" class="nav-item">Players</router-link>
-        <router-link to="/records" class="nav-item">Records</router-link>
+        <router-link to="/" class="nav-item">数据看板</router-link>
+        <router-link to="/rooms" class="nav-item">房间管理</router-link>
+        <router-link to="/players" class="nav-item">玩家管理</router-link>
+        <router-link to="/records" class="nav-item">牌局记录</router-link>
       </nav>
-
-      <div class="sidebar-footer">
-        <a href="../mobile/" class="nav-item external">Open Mobile</a>
-      </div>
     </aside>
 
     <main class="main-area">
@@ -41,13 +37,13 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const titleMap = {
-  AdminDashboard: 'Dashboard',
-  AdminRooms: 'Room Management',
-  AdminPlayers: 'Player Management',
-  AdminRecords: 'Game Records',
+  AdminDashboard: '数据看板',
+  AdminRooms: '房间管理',
+  AdminPlayers: '玩家管理',
+  AdminRecords: '牌局记录',
 }
 
-const pageTitle = computed(() => titleMap[route.name] || 'Admin Console')
+const pageTitle = computed(() => titleMap[route.name] || '管理后台')
 </script>
 
 <style scoped>
@@ -113,15 +109,6 @@ const pageTitle = computed(() => titleMap[route.name] || 'Admin Console')
   color: white;
   background: rgba(83, 58, 253, 0.15);
   border-right: 3px solid var(--color-primary);
-}
-
-.sidebar-footer {
-  padding: 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.external {
-  opacity: 0.65;
 }
 
 .main-area {

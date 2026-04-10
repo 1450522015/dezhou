@@ -3,32 +3,32 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value tabular-nums">{{ stats.onlinePlayers }}</div>
-        <div class="stat-label">Online players</div>
+        <div class="stat-label">在线玩家</div>
       </div>
       <div class="stat-card stat-primary">
         <div class="stat-value tabular-nums">{{ stats.activeRooms }}</div>
-        <div class="stat-label">Active rooms</div>
+        <div class="stat-label">活跃房间</div>
       </div>
       <div class="stat-card">
         <div class="stat-value tabular-nums">{{ stats.totalGames }}</div>
-        <div class="stat-label">Total games</div>
+        <div class="stat-label">总对局数</div>
       </div>
       <div class="stat-card">
         <div class="stat-value tabular-nums">{{ stats.totalUsers }}</div>
-        <div class="stat-label">Registered users</div>
+        <div class="stat-label">注册用户</div>
       </div>
     </div>
 
     <section class="card-section">
-      <h3 class="section-title">Recent rooms</h3>
+      <h3 class="section-title">最近房间</h3>
       <div class="table-wrapper">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Owner</th>
-              <th>Players</th>
-              <th>Status</th>
+              <th>房间名</th>
+              <th>房主</th>
+              <th>人数</th>
+              <th>状态</th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +41,7 @@
               </td>
             </tr>
             <tr v-if="recentRooms.length === 0">
-              <td colspan="4" class="empty-row">No data</td>
+              <td colspan="4" class="empty-row">暂无数据</td>
             </tr>
           </tbody>
         </table>
@@ -49,11 +49,11 @@
     </section>
 
     <section class="card-section">
-      <h3 class="section-title">Quick actions</h3>
+      <h3 class="section-title">快捷操作</h3>
       <div class="quick-actions">
-        <button class="action-btn" @click="$router.push('/rooms')">Manage rooms</button>
-        <button class="action-btn" @click="$router.push('/players')">Manage players</button>
-        <button class="action-btn" @click="$router.push('/records')">View records</button>
+        <button class="action-btn" @click="$router.push('/rooms')">管理房间</button>
+        <button class="action-btn" @click="$router.push('/players')">管理玩家</button>
+        <button class="action-btn" @click="$router.push('/records')">查看记录</button>
       </div>
     </section>
   </div>
@@ -73,10 +73,10 @@ const stats = reactive({
 const recentRooms = ref([])
 
 function statusText(status) {
-  if (status === 'playing') return 'Playing'
-  if (status === 'waiting') return 'Waiting'
-  if (status === 'finished') return 'Finished'
-  if (status === 'between_hands') return 'Between hands'
+  if (status === 'playing') return '游戏中'
+  if (status === 'waiting') return '等待中'
+  if (status === 'finished') return '已结束'
+  if (status === 'between_hands') return '局间准备'
   return status || '-'
 }
 

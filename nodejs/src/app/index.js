@@ -10,9 +10,10 @@ const registerSocketEvents = require('./register-socket-events');
 
 const { initDatabase } = require('../../src-server/models');
 const { router: authRouter } = require('../../src-server/auth');
-const { router: adminRouter } = require('../../src-server/admin');
+const { router: adminRouter } = require('../../src-server/api-admin');
 const { router: profileRouter } = require('../../src-server/profile');
 const { router: socialRouter } = require('../../src-server/social');
+const { createMobileApiRouter } = require('../../src-server/api.mobile');
 const { LobbyManager } = require('../../src-server/lobby');
 const { GameManager } = require('../../src-server/game');
 const {
@@ -38,14 +39,19 @@ server.on('error', err => {
 
 const lobbyManager = new LobbyManager();
 const gameManager = new GameManager();
-
-registerRoutes(app, {
+const mobileApiRouter = createMobileApiRouter({
   authRouter,
-  adminRouter,
   profileRouter,
   socialRouter,
   channelRouter,
   teamRouter,
+  lobbyManager,
+  gameManager,
+});
+
+registerRoutes(app, {
+  adminRouter,
+  mobileApiRouter,
   lobbyManager,
   gameManager,
 });
@@ -65,11 +71,10 @@ setInterval(() => {
 async function start() {
   try {
     await initDatabase();
-    console.log('MongoDB initialized');
     await lobbyManager.connect();
 
     server.listen(config.PORT, config.HOST, () => {
-      console.log(`Dezhou server started: http://${config.HOST}:${config.PORT}`);
+      console.log(`Dezhou fully started: http://${config.HOST}:${config.PORT}`);
     });
   } catch (err) {
     console.error('启动失败:', err);
